@@ -1,0 +1,34 @@
+{
+    "variables": {
+        "aws_region": "us-east-1",
+        "aws_ami_name": "packer_linux_ami",
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "aws_subnet_id": "subnet-045b68f48caf2a60e",
+        "aws_ami_id": "ami-0e75692ffb2d8313b",
+        "aws_instance_type": "t2.micro",
+        "aws_ssh_username": "ansible",
+        "aws_ssh_password": "Qazxsw@123"
+    },
+
+    "builders": [{
+        "access_key": "{{ user `aws_access_key` }}",
+        "secret_key": "{{ user `aws_secret_key` }}",
+        "type": "amazon-ebs",
+        "region": "{{user `aws_region`}}",
+        "instance_type": "{{ user `aws_instance_type` }}",
+        "subnet_id": "{{ user `aws_subnet_id` }}",
+        "ami_name": "{{user `aws_ami_name`}}",
+        "associate_public_ip_address": "true",
+        "source_ami": "{{ user `aws_ami_id` }}",
+        "ssh_username": "{{ user `aws_ssh_username` }}",
+        "ssh_password": "{{ user `aws_ssh_password` }}",
+        "ssh_pty" : "true" 
+    }],
+
+    "provisioners": [{
+            "type": "shell",
+            "script": "rhel_hardening.sh"
+    }]
+
+}
